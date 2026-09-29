@@ -27,10 +27,14 @@ Bei Bedarf zum Vergleich die Lösung ansehen:
 git diff v1-start v1-solution -- .github/workflows/deploy.yml
 ```
 
-> Für [EX-03](docs/exercises/EX-03-deploy-AWS-ECS.md) (ECS/Fargate) gibt es
-> bewusst **keinen** `v1-ecs`-Tag oder -Branch: Der `deploy-ecs`-Job dort ist
-> rein instruktiv und soll selbst auf Basis von `v1-solution` ergänzt werden,
-> es existiert (noch) keine fertige Referenzlösung im Repository.
+> [EX-03](docs/exercises/EX-03-deploy-AWS-ECS.md) (ECS/Fargate): Der
+> `deploy-ecs`-Job ist seit [PR #1](https://github.com/bbwlc/biztrips-2023-actions-aws-ec2/pull/1)
+> auf `main` als Referenzlösung vorhanden, in der AWS-Academy-Learner-Lab-
+> Variante (temporäre Zugangsdaten statt OIDC, Region `us-east-1`, `LabRole`
+> statt eigener `ecsTaskExecutionRole` — siehe Exkurs in EX-03). Wer die
+> Übung ohne vorherigen Blick auf `main` durchführen möchte, arbeitet
+> stattdessen mit `v1-solution` und ergänzt den Job selbst gemäss EX-03
+> Schritt 7.
 
 ## Voraussetzungen
 
@@ -70,14 +74,17 @@ Im Code werden sie über `import.meta.env.VITE_API_BASE_URL` gelesen.
 
 ## CI/CD-Pipeline
 
-Die Pipeline liegt in `.github/workflows/deploy.yml` und besteht aus drei Jobs:
+Die Pipeline liegt in `.github/workflows/deploy.yml` und besteht aus fünf Jobs:
 
 1. **test** – `npm ci` und `npm test` (Vitest)
 2. **build** – `npm run build`, das Ergebnis aus `dist/` wird als Artefakt hochgeladen
 3. **deploy** – lädt das Artefakt, überträgt es per `rsync` über SSH auf die
    EC2-Instanz nach `/var/www/biztrips` und lädt nginx neu
+4. **docker** – baut das Docker-Image und veröffentlicht es auf Docker Hub
+5. **deploy-ecs** – pusht das Image zusätzlich nach ECR und aktualisiert einen
+   ECS-Service (Fargate) per Rolling Deployment (siehe [EX-03](docs/exercises/EX-03-deploy-AWS-ECS.md))
 
-Der Deploy-Job läuft nur bei Pushes auf `main`, nicht bei Pull Requests.
+`deploy`, `docker` und `deploy-ecs` laufen nur bei Pushes auf `main`, nicht bei Pull Requests.
 
 ### Benötigte GitHub Secrets
 
@@ -88,6 +95,11 @@ Unter *Settings → Secrets and variables → Actions → Secrets*:
 | `EC2_HOST` | `ec2-1-2-3-4.eu-central-1.compute.amazonaws.com` | Hostname oder IP der EC2-Instanz |
 | `EC2_USER` | `ubuntu` | SSH-Benutzer (`ubuntu` bei Ubuntu-AMI, `ec2-user` bei Amazon Linux) |
 | `EC2_SSH_KEY` | `-----BEGIN OPENSSH PRIVATE KEY-----…` | Privater SSH-Key, vollständig inklusive Kopf- und Fusszeile |
+| `DOCKERHUB_USERNAME` | `<dockerhub-user>` | Docker-Hub-Benutzername für den `docker`-Job |
+| `DOCKERHUB_TOKEN` | `dckr_pat_…` | Docker-Hub-Access-Token für den `docker`-Job |
+| `AWS_ACCESS_KEY_ID` | `ASIA…` | AWS-Academy-Learner-Lab-Zugangsdaten für `deploy-ecs` (aus *AWS Details → AWS CLI* im Lab, läuft mit der Lab-Sitzung ab) |
+| `AWS_SECRET_ACCESS_KEY` | `…` | s.o. |
+| `AWS_SESSION_TOKEN` | `…` | s.o. |
 
 ### Benötigte GitHub Variables
 

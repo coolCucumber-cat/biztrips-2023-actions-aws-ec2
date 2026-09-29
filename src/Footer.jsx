@@ -7,7 +7,7 @@ export default function Footer() {
         This site is created for demonstrative purposes only and does not offer
         any real products or services.
       </p>
-      <p>&copy; BBW 2023/2024</p>
+      <p>&copy; BBW 2026/2027</p>
     </footer>
   );
 }

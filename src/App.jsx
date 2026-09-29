@@ -12,9 +12,9 @@ export default function App() {
     {
       id: 1,
       title: "BT01",
-      description: "San Francisco World Trade Center on new Server/IOT/Client002 2025",
-      startTrip: [2021, 2, 13, 0, 0],
-      endTrip: [2021, 2, 15, 16, 56],
+      description: "San Francisco World Trade Center on new Server/IOT/Client002 2027",
+      startTrip: [2027, 2, 13, 0, 0],
+      endTrip: [2027, 2, 15, 16, 56],
       meetings: [
         {
           id: 1,
@@ -32,8 +32,8 @@ export default function App() {
       id: 2,
       title: "BT02",
       description: "Santa Clara Halley on new Server/IOT/Client",
-      startTrip: [2021, 6, 23, 9, 0],
-      endTrip: [2021, 6, 27, 16, 56],
+      startTrip: [2027, 6, 23, 9, 0],
+      endTrip: [2027, 6, 27, 16, 56],
       meetings: [
         {
           id: 3,
@@ -51,8 +51,8 @@ export default function App() {
       id: 3,
       title: "BT03",
       description: "San Cose City Halley on Docker/IOT/Client",
-      startTrip: [2021, 12, 13, 9, 0],
-      endTrip: [2021, 12, 15, 16, 56],
+      startTrip: [2027, 12, 13, 9, 0],
+      endTrip: [2027, 12, 15, 16, 56],
       meetings: [
         {
           id: 5,
@@ -103,7 +103,7 @@ export default function App() {
       <div>
         <Header />
         <main>
-          <h1>Hey, Welcome to GitHub-AWS-Biztrips 2026</h1>
+          <h1>Welcome to GitHub-AWS-EC2-DOCKER-ECR/ECS Biztrips 2026</h1>
           <section id="filters">
             <label htmlFor="month">Filter by Month:</label>
             <select
